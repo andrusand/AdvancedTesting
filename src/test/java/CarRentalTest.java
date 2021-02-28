@@ -3,6 +3,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -40,5 +45,29 @@ public class CarRentalTest {
         verify(agencyMock, atLeastOnce()).findCar(eq(2), startsWith("t")); //Can use eq as equal and startsWith() and if it matches.
     }
 
+    @Test //Assertions - We want to check if the value matches what we expect, returned etc.
+    void assertionExample(){
+        List<Car> cars = agencyMock.findCar(5,"suv");
+
+        assertTrue(cars.isEmpty()); //check if array is empty
+    }
+
+    @Test //whenever our test will be looking for 5 seats and sedan, it gives the car we previously configured.
+    void usingWhenTestExample(){
+        Car opel = new Car("sedan","opelS",5,1.0,"Corsa","petrol",28.5);
+        when(agencyMock.findCar(5,"sedan"))
+                .thenReturn(Collections.singletonList(opel));
+
+        List<Car> carList = agencyMock.findCar(5,"sedan"); //it returns the value specificed in when clause above as it matches the implemetnations.
+
+        assertEquals(1,carList.size()); //expect there to be one car in array.
+
+        assertEquals(opel, carList.get(0)); //does the car match the same, that is in the array.
+
+        carList = agencyMock.findCar(2,"bus"); //doesn't return anything as value provided does not match when condition
+
+        assertTrue(carList.isEmpty()); //test if it is empty, passes.
+
+    }
 
 }
