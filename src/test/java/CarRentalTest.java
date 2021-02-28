@@ -26,13 +26,19 @@ public class CarRentalTest {
 
     @Test
     void verifyExampleAtMost(){
-        agencyMock.findCar(2,"sedan");
+        agencyMock.findCar(4,"sedan");
+        agencyMock.findCar(2,"convertible");
+        agencyMock.findCar(1,"mini");
         //We want to check that there are 'at most' X times invocations with any Integer and any String.
-        verify(agencyMock, atMost(5)).findCar(any(Integer.class), anyString());
-
+        verify(agencyMock, atMost(3)).findCar(any(Integer.class), anyString());
     }
 
-
+    @Test
+    void verifyExampleAtLeastOnce() {
+        agencyMock.findCar(2,"truck");
+        //We want to test that it must be called AT LEAST 1 time OR atLeast('number') of times.
+        verify(agencyMock, atLeastOnce()).findCar(eq(2), startsWith("t")); //Can use eq as equal and startsWith() and if it matches.
+    }
 
 
 }
